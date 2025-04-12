@@ -1,0 +1,33 @@
+@model List<BlogApp1.Entity.Post>
+
+@{
+    ViewData["Title"] = "Tüm Postlar";
+}
+
+<h2>Yayınlanan Postlar</h2>
+
+<div>
+    @foreach (var post in Model)
+    {
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+            <strong>@post.User?.UserName</strong> - 
+            <em>@post.CreatedDate.ToString("dd.MM.yyyy HH:mm")</em>
+            <h4>@post.Title</h4>
+            <p>@post.Content</p>
+        </div>
+    }
+</div>
+
+<hr />
+
+<h3>Yeni Post Ekle</h3>
+<form method="post" asp-action="Create">
+    <label for="title">Başlık:</label><br />
+    <input type="text" name="title" required style="width: 100%; margin-bottom: 10px;" /><br />
+    
+    <label for="content">İçerik:</label><br />
+    <textarea name="content" rows="4" cols="50" required></textarea><br />
+    
+    <button type="submit">Postla</button>
+</form>
+
