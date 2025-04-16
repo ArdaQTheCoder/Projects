@@ -1,0 +1,67 @@
+@model BlogApp1.Entity.Post
+
+@{
+    ViewData["Title"] = "Post Detayları";
+}
+
+<h2>@Model.Title</h2>
+
+<div class="post-details">
+    <p><strong>Yazar:</strong> @Model.User.UserName</p>
+    <p><strong>Yayın Tarihi:</strong> @Model.CreatedDate.ToString("dd.MM.yyyy HH:mm")</p>
+    <p>@Model.Content</p>
+
+    @if (Model.Tags != null && Model.Tags.Any())
+    {
+        <div class="mt-2">
+            <strong>Etiketler:</strong>
+            @foreach (var tag in Model.Tags)
+            {
+                <a href="@Url.Action("Details", "Tags", new { url = tag.Url })" class="badge bg-secondary me-1">
+                    @tag.Text
+                </a>
+            }
+        </div>
+    }
+</div>
+
+<hr />
+
+<div class="comments-section mt-4">
+    <h4>Yorumlar</h4>
+    @if (Model.Comments != null && Model.Comments.Any())
+    {
+        <ul class="list-group mb-3">
+            @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedDate))
+            {
+                <li class="list-group-item">
+                    <strong>@comment.User.UserName:</strong> @comment.Text
+                    <br />
+                    <small class="text-muted">@comment.CreatedDate.ToString("dd.MM.yyyy HH:mm")</small>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Henüz yorum yok.</p>
+    }
+
+    <hr />
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <h5>Yorum Yap</h5>
+        <form method="post" asp-action="AddComment" asp-controller="Post">
+            <input type="hidden" name="postId" value="@Model.PostId" />
+            <div class="mb-3">
+                <textarea name="text" class="form-control" rows="3" placeholder="Yorumunuzu yazın..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Gönder</button>
+        </form>
+    }
+    else if(!User.Identity.IsAuthenticated)
+    {
+        <p class="text-muted"><em>Yorum yapabilmek için giriş yapmalısınız.</em></p>
+    }
+</div>

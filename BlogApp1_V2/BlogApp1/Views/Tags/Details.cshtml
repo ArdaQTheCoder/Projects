@@ -1,0 +1,19 @@
+@model List<BlogApp1.Entity.Post>
+
+@{
+    ViewData["Title"] = "Etiket: " + (ViewBag.Tag?.Text ?? "");
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <!-- Kategori Başlığı -->
+    <div class="col-12 mb-3">
+        <h4>“@ViewBag.Tag.Text” etiketine sahip gönderiler</h4>
+    </div>
+
+    <!-- Postlar -->
+    <div class="col-12">
+        <partial name="_PostList" model="Model" />
+    </div>
+</div>

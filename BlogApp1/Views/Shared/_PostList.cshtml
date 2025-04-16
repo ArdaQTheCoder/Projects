@@ -1,0 +1,23 @@
+@model List<BlogApp1.Entity.Post>
+
+@foreach (var post in Model)
+{
+    <div class="post-item border rounded p-3 mb-4 shadow-sm bg-light">
+        <small class="text-muted">@post.User.UserName - @post.CreatedDate.ToString("dd.MM.yyyy HH:mm")</small>
+        <h4><a href="@Url.Action("Details", "Posts", new { id = post.PostId })">@post.Title</a></h4>
+        <p>@post.Content</p>
+
+        @if (post.Tags != null && post.Tags.Any())
+        {
+            <div class="mt-2">
+                <strong>Etiketler:</strong>
+                @foreach (var tag in post.Tags)
+                {
+                    <a href="@Url.Action("Details", "Tags", new { url = tag.Url })" class="badge bg-secondary me-1">
+                        @tag.Text
+                    </a>
+                }
+            </div>
+        }
+    </div>
+}
